@@ -1,0 +1,373 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#0f766e">
+    <title>Eligible to Register</title>
+    <link rel="icon" href="favicon.svg" type="image/svg+xml">
+    <link rel="manifest" href="manifest.webmanifest">
+    <link rel="stylesheet" href="styles.css">
+    <script src="vendor/xlsx.full.min.js" defer></script>
+  </head>
+  <body>
+    <main class="shell">
+      <header class="topbar">
+        <div>
+          <h1>Eligible to Register</h1>
+          <p id="datasetStatus">Latest report: none loaded</p>
+        </div>
+        <div class="top-actions">
+          <button id="settingsBtn" class="ghost" type="button">Settings</button>
+          <button id="clearDataBtn" class="danger">Clear local data</button>
+        </div>
+      </header>
+
+      <section class="upload-grid">
+        <form id="reportForm" class="panel compact-panel">
+          <div class="panel-title">
+            <h2>Weekly report</h2>
+            <span class="tag">Excel or CSV</span>
+          </div>
+          <label class="dropzone" for="reportFile" id="reportDrop">
+            <input id="reportFile" type="file" accept=".xlsx,.xls,.csv" required>
+            <strong>Choose report file</strong>
+            <span id="reportFileName">No file selected</span>
+          </label>
+          <label class="field">
+            <span>Choose report date</span>
+            <input id="reportWeek" type="date" required>
+          </label>
+          <button type="submit">Load weekly report</button>
+        </form>
+
+        <form id="outreachForm" class="panel compact-panel">
+          <div class="panel-title">
+            <h2>Log contact with student</h2>
+            <span class="tag">Saved locally</span>
+          </div>
+          <div class="form-grid">
+            <label class="field">
+              <span>Contact date</span>
+              <input id="contactDate" type="date" required>
+            </label>
+            <label class="field">
+              <span>Channel</span>
+              <select id="contactChannel">
+                <option>Email</option>
+                <option>Phone</option>
+                <option>Text</option>
+                <option>Advisor</option>
+                <option>Other</option>
+              </select>
+            </label>
+          </div>
+          <label class="field">
+            <span>Student IDs</span>
+            <textarea id="contactStudentId" rows="2" placeholder="Enter one ID, or paste many separated by commas, spaces, or new lines"></textarea>
+          </label>
+          <label class="field">
+            <span>Notes</span>
+            <input id="contactNotes" type="text" placeholder="Short internal note">
+          </label>
+          <button type="submit">Add contact</button>
+        </form>
+      </section>
+
+      <section class="metrics" id="metrics"></section>
+
+      <section class="workspace">
+        <aside class="filters panel">
+          <div class="panel-title">
+            <h2>Focus</h2>
+          </div>
+          <label class="field">
+            <span>Search</span>
+            <input id="searchInput" type="search" placeholder="Name, ID, email, program">
+          </label>
+          <label class="field">
+            <span>Level</span>
+            <select id="levelFilter"></select>
+          </label>
+          <label class="field">
+            <span>Program</span>
+            <select id="programFilter"></select>
+          </label>
+          <label class="field">
+            <span>Flag</span>
+            <select id="flagFilter">
+              <option value="">All students</option>
+              <option value="newStudent">New student</option>
+              <option value="transferStudent">Transfer student</option>
+              <option value="longTimeEnrolled">Long time enrolled</option>
+              <option value="nearGraduate">Near graduation</option>
+              <option value="academicRisk">Academic risk</option>
+              <option value="dismissalRisk">Dismissal risk</option>
+              <option value="contacted">Contacted</option>
+              <option value="emailHold">Email hold</option>
+              <option value="notContacted">Not contacted</option>
+            </select>
+          </label>
+        </aside>
+
+        <section class="panel data-panel">
+          <div class="tabs" role="tablist">
+            <button class="tab active" data-tab="students">Unregistered Students</button>
+            <button class="tab" data-tab="longEnrolled">Long Time Enrolled</button>
+            <button class="tab" data-tab="comparison">Comparison</button>
+            <button class="tab" data-tab="stats">Stats</button>
+            <button class="tab" data-tab="insights">Insights</button>
+            <button class="tab" data-tab="outreach">Outreach</button>
+          </div>
+
+          <div id="studentsTab" class="tab-view active">
+            <div class="table-toolbar">
+              <strong id="studentCount">0 unregistered students</strong>
+              <button id="exportFindingsBtn" class="ghost">Export findings report</button>
+            </div>
+            <div class="student-quick-filters">
+              <label class="table-check">
+                <input id="hideEmailHoldStudents" type="checkbox">
+                <span>Hide email holds</span>
+              </label>
+              <label class="table-check">
+                <input id="hideContactedStudents" type="checkbox">
+                <span>Hide contacted students</span>
+              </label>
+            </div>
+            <details id="studentsSection" class="collapsible-section">
+              <summary>
+                <span>Student list</span>
+              </summary>
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Student</th>
+                      <th>Program</th>
+                      <th>Credits</th>
+                      <th>GPA</th>
+                      <th>Status</th>
+                      <th>Contact</th>
+                    </tr>
+                  </thead>
+                  <tbody id="studentRows"></tbody>
+                </table>
+              </div>
+            </details>
+          </div>
+
+          <div id="longEnrolledTab" class="tab-view">
+            <div class="table-toolbar">
+              <strong id="longEnrolledCount">0 long time enrolled students</strong>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Student</th>
+                    <th>Admit term</th>
+                    <th>Program</th>
+                    <th>Credits</th>
+                    <th>GPA</th>
+                    <th>Status</th>
+                    <th>Contact</th>
+                  </tr>
+                </thead>
+                <tbody id="longEnrolledRows"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <div id="comparisonTab" class="tab-view">
+            <div class="table-toolbar">
+              <strong id="comparisonTitle">Upload at least two reports</strong>
+              <button id="exportComparisonBtn" class="ghost">Export comparison</button>
+            </div>
+            <div class="comparison-grid" id="comparisonSummary"></div>
+            <details class="report-history collapsible-section">
+              <summary>
+                <span>Loaded reports</span>
+                <small id="reportHistoryCount">0 reports</small>
+              </summary>
+              <div id="reportHistory" class="history-list"></div>
+            </details>
+            <div class="comparison-sections">
+              <details id="resolvedSection" class="comparison-list-section collapsible-section">
+                <summary>
+                  <span>Students registered since last report</span>
+                  <small id="resolvedSummaryCount">0 students</small>
+                </summary>
+                <div class="table-wrap">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Student</th>
+                        <th>Program</th>
+                        <th>Prior credits</th>
+                        <th>Prior GPA</th>
+                        <th>Outreach</th>
+                      </tr>
+                    </thead>
+                    <tbody id="resolvedRows"></tbody>
+                  </table>
+                </div>
+              </details>
+              <details id="newSection" class="comparison-list-section collapsible-section">
+                <summary>
+                  <span>New on latest report</span>
+                  <small id="newSummaryCount">0 students</small>
+                </summary>
+                <div class="table-wrap">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Student</th>
+                        <th>Program</th>
+                        <th>Credits</th>
+                        <th>GPA</th>
+                        <th>Status</th>
+                      </tr>
+                    </thead>
+                    <tbody id="newRows"></tbody>
+                  </table>
+                </div>
+              </details>
+              <details id="afterOutreachSection" class="comparison-list-section collapsible-section">
+                <summary>
+                  <span>Registered since being contacted</span>
+                  <small id="afterOutreachSummaryCount">0 students</small>
+                </summary>
+                <div class="table-wrap">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Student</th>
+                        <th>Program</th>
+                        <th>Prior credits</th>
+                        <th>Prior GPA</th>
+                        <th>Outreach</th>
+                      </tr>
+                    </thead>
+                    <tbody id="afterOutreachRows"></tbody>
+                  </table>
+                </div>
+              </details>
+            </div>
+          </div>
+
+          <div id="statsTab" class="tab-view">
+            <div class="table-toolbar">
+              <strong>Stats</strong>
+            </div>
+            <div id="statsList" class="stats-list"></div>
+          </div>
+
+          <div id="insightsTab" class="tab-view">
+            <div class="table-toolbar insights-toolbar">
+              <strong>Insights</strong>
+              <button id="exportInsightsPdfBtn" class="ghost" type="button">Export insights PDF</button>
+            </div>
+            <div class="insight-controls">
+              <div>
+                <h3>Compare weeks</h3>
+                <div id="insightWeekOptions" class="check-grid"></div>
+              </div>
+              <div>
+                <h3>Show charts</h3>
+                <div id="insightChartOptions" class="check-grid compact"></div>
+              </div>
+            </div>
+            <div id="insightCharts" class="insight-chart-grid"></div>
+            <section class="insight-card">
+              <div class="panel-title">
+                <h3>Weekly trend lines</h3>
+                <span class="tag">Filtered view</span>
+              </div>
+              <div class="trend-controls">
+                <h3>Trend lines</h3>
+                <div id="insightTrendOptions" class="check-grid compact"></div>
+              </div>
+              <div id="insightTrend" class="line-chart"></div>
+            </section>
+          </div>
+
+          <div id="outreachTab" class="tab-view">
+            <div class="table-toolbar">
+              <strong id="outreachCount">0 contacts</strong>
+              <button id="exportOutreachBtn" class="ghost">Export outreach</button>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Student ID</th>
+                    <th>Channel</th>
+                    <th>Result</th>
+                    <th>Email hold</th>
+                    <th>Notes</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody id="outreachRows"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+      </section>
+    </main>
+
+    <template id="emptyState">
+      <tr>
+        <td colspan="6" class="empty">Load a weekly report to begin.</td>
+      </tr>
+    </template>
+
+    <div id="notesModal" class="modal-backdrop" hidden>
+      <section class="modal-card" role="dialog" aria-modal="true" aria-labelledby="notesModalTitle">
+        <div class="modal-header">
+          <div>
+            <h2 id="notesModalTitle">Notes</h2>
+            <p id="notesModalMeta"></p>
+          </div>
+          <button id="notesModalClose" class="icon-button" type="button" aria-label="Close notes">×</button>
+        </div>
+        <div id="notesModalBody" class="modal-notes"></div>
+      </section>
+    </div>
+
+    <div id="settingsModal" class="modal-backdrop" hidden>
+      <section class="modal-card" role="dialog" aria-modal="true" aria-labelledby="settingsModalTitle">
+        <div class="modal-header">
+          <div>
+            <h2 id="settingsModalTitle">Settings</h2>
+            <p>Adjust the thresholds used for labels, exports, and insights.</p>
+          </div>
+          <button id="settingsModalClose" class="icon-button" type="button" aria-label="Close settings">×</button>
+        </div>
+        <div class="settings-form">
+          <label class="field">
+            <span>Graduation hours</span>
+            <input id="gradHours" type="number" min="0" step="1" value="120">
+          </label>
+          <label class="field">
+            <span>Academic risk GPA</span>
+            <input id="riskGpa" type="number" min="0" max="4.3" step="0.1" value="2.0">
+          </label>
+          <label class="field">
+            <span>Dismissal risk GPA</span>
+            <input id="dismissalGpa" type="number" min="0" max="4.3" step="0.1" value="1.7">
+          </label>
+          <label class="field">
+            <span>Long time enrolled years</span>
+            <input id="longEnrolledYears" type="number" min="1" step="1" value="5">
+          </label>
+          <button id="settingsDoneBtn" type="button">Done</button>
+        </div>
+      </section>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>

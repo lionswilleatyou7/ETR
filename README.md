@@ -47,7 +47,7 @@ manifest.webmanifest
 
 ## Sample Data
 
-The repo includes four fake weekly reports and one fake historical registration-date workbook in:
+The repo includes three fake weekly unregistered-student reports and one fake historical registration-date workbook in:
 
 ```text
 sample-data/
@@ -56,10 +56,9 @@ sample-data/
 Files:
 
 ```text
-sample-data/fake-week-1-2026-06-15.csv
-sample-data/fake-week-2-2026-06-22.csv
-sample-data/fake-week-3-2026-06-29.csv
-sample-data/fake-week-4-2026-07-06.csv
+sample-data/Unregistered-Fake1.xlsx
+sample-data/Unregistered-Fake2.xlsx
+sample-data/Unregistered-Fake3.xlsx
 sample-data/fake-last-year-registration-dates.xlsx
 ```
 
@@ -68,12 +67,13 @@ These are fictional records with fake names, fake IDs, and fake email addresses.
 To test the app with the weekly sample data:
 
 1. Open `index.html`.
-2. Load `fake-week-1-2026-06-15.csv` with report date `2026-06-15`.
-3. Load `fake-week-2-2026-06-22.csv` with report date `2026-06-22`.
-4. Load `fake-week-3-2026-06-29.csv` with report date `2026-06-29`.
-5. Load `fake-week-4-2026-07-06.csv` with report date `2026-07-06`.
+2. Load `Unregistered-Fake1.xlsx` with report date `2026-06-29`.
+3. Load `Unregistered-Fake2.xlsx` with report date `2026-07-06`.
+4. Load `Unregistered-Fake3.xlsx` with report date `2026-07-13`.
 
 After loading at least two reports, the dashboard can show week-over-week comparisons.
+
+The fake weekly workbooks include title rows before the header row. This is intentional; the app is built to find the actual header row.
 
 To test historical benchmarks:
 
@@ -221,7 +221,7 @@ Budget enrolment numbers are documented in the app as coming from the Budget For
 
 To test this tab fully with sample data:
 
-1. Load the four fake weekly reports from `sample-data/`.
+1. Load the three fake weekly reports from `sample-data/`.
 2. Load `fake-last-year-registration-dates.xlsx` in the Historical Benchmarks area.
 3. Use Focus filters to check that historical comparisons respond to level/program filtering.
 
@@ -478,10 +478,9 @@ student-outreach-dashboard/
   manifest.webmanifest
   .gitignore
   sample-data/
-    fake-week-1-2026-06-15.csv
-    fake-week-2-2026-06-22.csv
-    fake-week-3-2026-06-29.csv
-    fake-week-4-2026-07-06.csv
+    Unregistered-Fake1.xlsx
+    Unregistered-Fake2.xlsx
+    Unregistered-Fake3.xlsx
     fake-last-year-registration-dates.xlsx
   vendor/
     xlsx.full.min.js
@@ -554,7 +553,7 @@ Before leaving the project alone for a while:
 1. Confirm fake data is included.
 2. Confirm no real data is committed.
 3. Open the app once from `index.html`.
-4. Load the four sample reports.
+4. Load the three sample reports.
 5. Load the fake historical registration-date workbook.
 6. Check Week-over-week, Insights, and Benchmarks & Targets.
 7. Clear all data if you tested with real data.

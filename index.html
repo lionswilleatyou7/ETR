@@ -12,6 +12,7 @@
   </head>
   <body>
     <main class="shell">
+      <!-- Top title area with app actions. -->
       <header class="topbar">
         <div>
           <h1>Eligible to Register</h1>
@@ -19,11 +20,12 @@
         </div>
         <div class="top-actions">
           <button id="settingsBtn" class="ghost" type="button">Settings</button>
-          <button id="clearDataBtn" class="danger">Clear local data</button>
+          <button id="clearDataBtn" class="danger">Clear all data</button>
         </div>
       </header>
 
-      <section class="upload-grid">
+      <!-- Weekly report upload area and the main metric cards. -->
+      <section class="upload-grid report-upload-grid">
         <form id="reportForm" class="panel compact-panel">
           <div class="panel-title">
             <h2>Weekly report</h2>
@@ -39,44 +41,14 @@
             <input id="reportWeek" type="date" required>
           </label>
           <button type="submit">Load weekly report</button>
+          <div id="uploadSummary" class="upload-summary"></div>
         </form>
-
-        <form id="outreachForm" class="panel compact-panel">
-          <div class="panel-title">
-            <h2>Log contact with student</h2>
-            <span class="tag">Saved locally</span>
-          </div>
-          <div class="form-grid">
-            <label class="field">
-              <span>Contact date</span>
-              <input id="contactDate" type="date" required>
-            </label>
-            <label class="field">
-              <span>Channel</span>
-              <select id="contactChannel">
-                <option>Email</option>
-                <option>Phone</option>
-                <option>Text</option>
-                <option>Advisor</option>
-                <option>Other</option>
-              </select>
-            </label>
-          </div>
-          <label class="field">
-            <span>Student IDs</span>
-            <textarea id="contactStudentId" rows="2" placeholder="Enter one ID, or paste many separated by commas, spaces, or new lines"></textarea>
-          </label>
-          <label class="field">
-            <span>Notes</span>
-            <input id="contactNotes" type="text" placeholder="Short internal note">
-          </label>
-          <button type="submit">Add contact</button>
-        </form>
+        <section class="metrics top-metrics" id="metrics"></section>
       </section>
 
-      <section class="metrics" id="metrics"></section>
-
+      <!-- Main workspace: filters on the left, dashboard tabs on the right. -->
       <section class="workspace">
+        <!-- Focus filters used to narrow almost every list, chart, and metric. -->
         <aside class="filters panel">
           <div class="panel-title">
             <h2>Focus</h2>
@@ -99,27 +71,51 @@
               <option value="">All students</option>
               <option value="newStudent">New student</option>
               <option value="transferStudent">Transfer student</option>
-              <option value="longTimeEnrolled">Long time enrolled</option>
+              <option value="longTimeEnrolled">5+ Years Enrolled</option>
               <option value="nearGraduate">Near graduation</option>
               <option value="academicRisk">Academic risk</option>
-              <option value="dismissalRisk">Dismissal risk</option>
               <option value="contacted">Contacted</option>
               <option value="emailHold">Email hold</option>
               <option value="notContacted">Not contacted</option>
             </select>
           </label>
+          <fieldset class="filter-check-group">
+            <legend>Credit hours completed</legend>
+            <label>
+              <input name="creditHourFilter" type="checkbox" value="zero">
+              <span>0 credits</span>
+            </label>
+            <label>
+              <input name="creditHourFilter" type="checkbox" value="under60">
+              <span>Under 60</span>
+            </label>
+            <label>
+              <input name="creditHourFilter" type="checkbox" value="60to89">
+              <span>60-89</span>
+            </label>
+            <label>
+              <input name="creditHourFilter" type="checkbox" value="90to114">
+              <span>90-114</span>
+            </label>
+            <label>
+              <input name="creditHourFilter" type="checkbox" value="115plus">
+              <span>115+</span>
+            </label>
+          </fieldset>
         </aside>
 
+        <!-- Main dashboard panel. Each tab below is shown or hidden by app.js. -->
         <section class="panel data-panel">
+          <!-- Tab buttons. The data-tab value tells JavaScript which view to show. -->
           <div class="tabs" role="tablist">
             <button class="tab active" data-tab="students">Unregistered Students</button>
-            <button class="tab" data-tab="longEnrolled">Long Time Enrolled</button>
-            <button class="tab" data-tab="comparison">Comparison</button>
-            <button class="tab" data-tab="stats">Stats</button>
+            <button class="tab" data-tab="comparison">Week-over-week</button>
             <button class="tab" data-tab="insights">Insights</button>
-            <button class="tab" data-tab="outreach">Outreach</button>
+            <button class="tab" data-tab="targets">Benchmarks & Targets</button>
+            <button class="tab" data-tab="outreach">Student Outreach</button>
           </div>
 
+          <!-- Unregistered Students tab. Shows the current latest-report student list. -->
           <div id="studentsTab" class="tab-view active">
             <div class="table-toolbar">
               <strong id="studentCount">0 unregistered students</strong>
@@ -157,34 +153,14 @@
             </details>
           </div>
 
-          <div id="longEnrolledTab" class="tab-view">
-            <div class="table-toolbar">
-              <strong id="longEnrolledCount">0 long time enrolled students</strong>
-            </div>
-            <div class="table-wrap">
-              <table>
-                <thead>
-                  <tr>
-                    <th>Student</th>
-                    <th>Admit term</th>
-                    <th>Program</th>
-                    <th>Credits</th>
-                    <th>GPA</th>
-                    <th>Status</th>
-                    <th>Contact</th>
-                  </tr>
-                </thead>
-                <tbody id="longEnrolledRows"></tbody>
-              </table>
-            </div>
-          </div>
-
+          <!-- Week-over-week tab. Compares the latest report with the prior report. -->
           <div id="comparisonTab" class="tab-view">
             <div class="table-toolbar">
               <strong id="comparisonTitle">Upload at least two reports</strong>
               <button id="exportComparisonBtn" class="ghost">Export comparison</button>
             </div>
             <div class="comparison-grid" id="comparisonSummary"></div>
+            <section id="comparisonMovementChart" class="comparison-movement"></section>
             <details class="report-history collapsible-section">
               <summary>
                 <span>Loaded reports</span>
@@ -256,18 +232,84 @@
             </div>
           </div>
 
-          <div id="statsTab" class="tab-view">
-            <div class="table-toolbar">
-              <strong>Stats</strong>
-            </div>
-            <div id="statsList" class="stats-list"></div>
+          <!-- Benchmarks & Targets tab. Shows budget targets and historical pace data. -->
+          <div id="targetsTab" class="tab-view">
+          <div class="table-toolbar">
+            <strong>Benchmarks & Targets</strong>
+          </div>
+            <div id="targetSummary" class="comparison-grid"></div>
+            <section class="historical-card">
+              <h3>Fall 2026 budget enrolment targets</h3>
+              <p class="section-note">Please note: Budgeted enrolment numbers come from the Budget Forecast dashboard</p>
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Program</th>
+                      <th>Target</th>
+                      <th>Estimated registered</th>
+                      <th>Current unregistered</th>
+                      <th>Remaining gap</th>
+                    </tr>
+                  </thead>
+                  <tbody id="targetRows"></tbody>
+                </table>
+              </div>
+            </section>
+            <section class="benchmark-section">
+              <div class="table-toolbar embedded-toolbar">
+                <strong>Historical Benchmarks</strong>
+                <button id="clearHistoricalBtn" class="ghost" type="button">Clear historical data</button>
+              </div>
+              <form id="historicalForm" class="historical-import">
+                <label class="dropzone" for="historicalFile" id="historicalDrop">
+                  <input id="historicalFile" type="file" accept=".xlsx,.xls,.csv" required>
+                  <strong>Choose last year's registration file</strong>
+                  <span id="historicalFileName">No file selected</span>
+                </label>
+                <button type="submit">Load historical registrations</button>
+              </form>
+              <div id="historicalStatus" class="historical-status"></div>
+              <div id="historicalMetrics" class="comparison-grid"></div>
+              <div id="historicalTrend" class="historical-card"></div>
+              <div class="historical-grid">
+                <section class="historical-card">
+                  <h3>Program pace comparison</h3>
+                  <div id="historicalProgramRows" class="stat-breakdown"></div>
+                </section>
+                <section class="historical-card">
+                  <h3>Forecast</h3>
+                  <div id="historicalForecastRows" class="stat-breakdown"></div>
+                </section>
+              </div>
+              <section class="historical-card">
+                <h3>Late-registration risk</h3>
+                <div class="table-wrap">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Student</th>
+                        <th>Program</th>
+                        <th>Benchmark</th>
+                        <th>Status</th>
+                      </tr>
+                    </thead>
+                    <tbody id="historicalRiskRows"></tbody>
+                  </table>
+                </div>
+              </section>
+            </section>
           </div>
 
+          <!-- Insights tab. Shows summary stats, pie charts, and trend lines. -->
           <div id="insightsTab" class="tab-view">
             <div class="table-toolbar insights-toolbar">
               <strong>Insights</strong>
               <button id="exportInsightsPdfBtn" class="ghost" type="button">Export insights PDF</button>
             </div>
+            <section class="insight-card">
+              <div id="statsList" class="stats-list"></div>
+            </section>
             <div class="insight-controls">
               <div>
                 <h3>Compare weeks</h3>
@@ -292,7 +334,39 @@
             </section>
           </div>
 
+          <!-- Student Outreach tab. Logs contact history and outreach results. -->
           <div id="outreachTab" class="tab-view">
+            <form id="outreachForm" class="outreach-log-form">
+              <div class="panel-title">
+                <h2>Log contact with student</h2>
+                <span class="tag">Saved locally</span>
+              </div>
+              <div class="outreach-form-grid">
+                <label class="field">
+                  <span>Contact date</span>
+                  <input id="contactDate" type="date" required>
+                </label>
+                <label class="field">
+                  <span>Channel</span>
+                  <select id="contactChannel">
+                    <option>Email</option>
+                    <option>Phone</option>
+                    <option>Text</option>
+                    <option>Advisor</option>
+                    <option>Other</option>
+                  </select>
+                </label>
+                <label class="field outreach-student-ids">
+                  <span>Student IDs</span>
+                  <textarea id="contactStudentId" rows="2" placeholder="Enter one ID, or paste many separated by commas, spaces, or new lines"></textarea>
+                </label>
+                <label class="field outreach-notes">
+                  <span>Notes</span>
+                  <input id="contactNotes" type="text" placeholder="Short internal note">
+                </label>
+                <button type="submit">Add contact</button>
+              </div>
+            </form>
             <div class="table-toolbar">
               <strong id="outreachCount">0 contacts</strong>
               <button id="exportOutreachBtn" class="ghost">Export outreach</button>
@@ -318,12 +392,14 @@
       </section>
     </main>
 
+    <!-- Reusable empty table row for screens with no loaded report. -->
     <template id="emptyState">
       <tr>
         <td colspan="6" class="empty">Load a weekly report to begin.</td>
       </tr>
     </template>
 
+    <!-- Pop-up used to view and delete saved outreach notes. -->
     <div id="notesModal" class="modal-backdrop" hidden>
       <section class="modal-card" role="dialog" aria-modal="true" aria-labelledby="notesModalTitle">
         <div class="modal-header">
@@ -337,6 +413,7 @@
       </section>
     </div>
 
+    <!-- Pop-up used to edit dashboard settings and budget targets. -->
     <div id="settingsModal" class="modal-backdrop" hidden>
       <section class="modal-card" role="dialog" aria-modal="true" aria-labelledby="settingsModalTitle">
         <div class="modal-header">
@@ -356,13 +433,24 @@
             <input id="riskGpa" type="number" min="0" max="4.3" step="0.1" value="2.0">
           </label>
           <label class="field">
-            <span>Dismissal risk GPA</span>
-            <input id="dismissalGpa" type="number" min="0" max="4.3" step="0.1" value="1.7">
-          </label>
-          <label class="field">
-            <span>Long time enrolled years</span>
+            <span>5+ Years Enrolled threshold</span>
             <input id="longEnrolledYears" type="number" min="1" step="1" value="5">
           </label>
+          <section class="settings-section">
+            <h3>Budget enrolment targets</h3>
+            <form id="targetForm" class="target-settings-form">
+              <label class="field">
+                <span>Program</span>
+                <input id="targetProgram" list="targetProgramOptions" type="text" placeholder="Choose or type a program" required>
+                <datalist id="targetProgramOptions"></datalist>
+              </label>
+              <label class="field">
+                <span>Fall 2026 budget enrolment</span>
+                <input id="targetValue" type="number" min="0" step="1" placeholder="Expected registered students" required>
+              </label>
+              <button type="submit">Save target</button>
+            </form>
+          </section>
           <button id="settingsDoneBtn" type="button">Done</button>
         </div>
       </section>

@@ -1,1 +1,7 @@
 .DS_Store
+real-data/
+private-data/
+exports/
+*.local.csv
+*.local.xlsx
+*.local.xls

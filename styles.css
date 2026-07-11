@@ -1,3 +1,4 @@
+/* Main color palette and shared sizing values. */
 :root {
   color-scheme: light;
   --bg: #f5f7fa;
@@ -18,6 +19,7 @@
   box-sizing: border-box;
 }
 
+/* Basic page defaults. */
 body {
   margin: 0;
   min-height: 100vh;
@@ -27,6 +29,7 @@ body {
   letter-spacing: 0;
 }
 
+/* Shared button and form font settings. */
 button,
 input,
 select,
@@ -34,13 +37,14 @@ textarea {
   font: inherit;
 }
 
+/* Main button style. */
 button {
   border: 0;
   border-radius: 6px;
   background: var(--accent);
   color: #fff;
-  min-height: 42px;
-  padding: 0 14px;
+  min-height: 36px;
+  padding: 0 12px;
   cursor: pointer;
   font-weight: 700;
 }
@@ -67,18 +71,20 @@ button.danger:hover {
   background: #fecdca;
 }
 
+/* Overall page frame. */
 .shell {
   width: min(1440px, calc(100% - 20px));
   margin: 0 auto;
-  padding: 18px 0 36px;
+  padding: 10px 0 28px;
 }
 
+/* Top title bar and app actions. */
 .topbar {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
-  margin-bottom: 18px;
+  gap: 12px;
+  margin-bottom: 10px;
 }
 
 h1,
@@ -89,7 +95,7 @@ p {
 }
 
 h1 {
-  font-size: 30px;
+  font-size: 24px;
   line-height: 1.1;
 }
 
@@ -104,7 +110,8 @@ h3 {
 
 .topbar p {
   color: var(--muted);
-  margin-top: 6px;
+  font-size: 13px;
+  margin-top: 3px;
 }
 
 .top-actions {
@@ -114,6 +121,7 @@ h3 {
   justify-content: flex-end;
 }
 
+/* Reusable white panel container. */
 .panel {
   background: var(--panel);
   border: 1px solid var(--line);
@@ -121,11 +129,17 @@ h3 {
   box-shadow: var(--shadow);
 }
 
+/* Weekly report upload area. */
 .upload-grid {
   display: grid;
   grid-template-columns: minmax(250px, 0.85fr) minmax(360px, 1.15fr);
-  gap: 12px;
-  margin-bottom: 12px;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.report-upload-grid {
+  align-items: stretch;
+  grid-template-columns: minmax(280px, 430px) minmax(360px, 1fr);
 }
 
 form.panel,
@@ -134,19 +148,46 @@ form.panel,
 }
 
 form.compact-panel {
-  padding: 12px;
+  padding: 10px;
 }
 
 .compact-panel .panel-title {
-  margin-bottom: 10px;
-}
-
-.compact-panel .field {
   margin-bottom: 8px;
 }
 
+.compact-panel .field {
+  margin-bottom: 6px;
+}
+
 .compact-panel button[type="submit"] {
-  min-height: 38px;
+  min-height: 34px;
+}
+
+.upload-summary {
+  border-top: 1px solid var(--line);
+  display: grid;
+  gap: 4px;
+  margin-top: 8px;
+  padding-top: 8px;
+}
+
+.upload-summary div {
+  align-items: center;
+  display: grid;
+  gap: 10px;
+  grid-template-columns: minmax(0, 1fr) auto;
+}
+
+.upload-summary span {
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.upload-summary strong {
+  color: var(--ink);
+  font-size: 11px;
+  text-align: right;
 }
 
 .panel-title {
@@ -175,6 +216,38 @@ form.compact-panel {
   margin-bottom: 12px;
 }
 
+/* Credit-hour checkbox group in Focus filters. */
+.filter-check-group {
+  border: 0;
+  border-top: 1px solid var(--line);
+  display: grid;
+  gap: 8px;
+  margin: 2px 0 0;
+  padding: 12px 0 0;
+}
+
+.filter-check-group legend {
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 800;
+  padding: 0;
+}
+
+.filter-check-group label {
+  align-items: center;
+  color: var(--ink);
+  display: flex;
+  font-size: 13px;
+  font-weight: 700;
+  gap: 8px;
+}
+
+.filter-check-group input {
+  min-height: auto;
+  width: auto;
+}
+
+/* Standard input, select, and textarea styling. */
 input,
 select,
 textarea {
@@ -187,6 +260,7 @@ textarea {
   padding: 0 10px;
 }
 
+/* Smaller controls used inside tables. */
 .table-select {
   min-width: 116px;
   min-height: 34px;
@@ -276,6 +350,7 @@ button:focus {
   outline-offset: 2px;
 }
 
+/* File chooser area styled like a drop zone. */
 .dropzone {
   display: grid;
   place-items: center;
@@ -290,13 +365,14 @@ button:focus {
 }
 
 .compact-panel .dropzone {
-  min-height: 72px;
-  margin-bottom: 8px;
-  padding: 10px;
+  min-height: 46px;
+  margin-bottom: 6px;
+  padding: 6px 10px;
 }
 
 .compact-panel .dropzone span {
-  margin-top: 2px;
+  font-size: 12px;
+  margin-top: 1px;
 }
 
 .dropzone strong {
@@ -324,11 +400,46 @@ button:focus {
   gap: 10px;
 }
 
+/* Student Outreach form layout. */
+.outreach-log-form {
+  background: #f8fafc;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  margin-bottom: 14px;
+  padding: 14px;
+}
+
+.outreach-log-form .panel-title {
+  margin-bottom: 12px;
+}
+
+.outreach-form-grid {
+  align-items: end;
+  display: grid;
+  gap: 10px;
+  grid-template-columns: minmax(140px, 0.7fr) minmax(140px, 0.7fr) minmax(240px, 1.4fr) minmax(220px, 1fr) auto;
+}
+
+.outreach-form-grid .field {
+  margin-bottom: 0;
+}
+
+.outreach-form-grid textarea {
+  min-height: 40px;
+}
+
+/* Top dashboard metric cards. */
 .metrics {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(145px, 1fr));
-  gap: 10px;
-  margin-bottom: 12px;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.top-metrics {
+  align-content: start;
+  grid-template-columns: repeat(3, minmax(140px, 1fr));
+  margin-bottom: 0;
 }
 
 .metric {
@@ -337,8 +448,8 @@ button:focus {
   border-radius: 8px;
   color: var(--ink);
   cursor: pointer;
-  padding: 11px;
-  min-height: 82px;
+  padding: 8px 10px;
+  min-height: 66px;
   text-align: left;
 }
 
@@ -350,22 +461,27 @@ button:focus {
 .metric span {
   color: var(--muted);
   display: block;
-  font-size: 12px;
+  font-size: 10px;
   font-weight: 800;
   text-transform: uppercase;
 }
 
 .metric strong {
   display: block;
-  font-size: 26px;
-  line-height: 1.2;
-  margin-top: 6px;
+  font-size: 21px;
+  line-height: 1.08;
+  margin-top: 4px;
 }
 
 .metric small {
   color: var(--muted);
+  display: block;
+  font-size: 11px;
+  line-height: 1.2;
+  margin-top: 3px;
 }
 
+/* Main two-column workspace: filters plus tab panel. */
 .workspace {
   display: grid;
   grid-template-columns: clamp(210px, 22vw, 280px) minmax(0, 1fr);
@@ -383,6 +499,7 @@ button:focus {
   overflow: hidden;
 }
 
+/* Tab button row. */
 .tabs {
   display: flex;
   gap: 4px;
@@ -411,6 +528,7 @@ button:focus {
   display: block;
 }
 
+/* Header row above tables and sections. */
 .table-toolbar {
   display: flex;
   align-items: center;
@@ -427,6 +545,7 @@ button:focus {
   margin: -2px 0 12px;
 }
 
+/* Scroll wrapper around wide tables. */
 .table-wrap {
   overflow: auto;
   border: 1px solid var(--line);
@@ -462,6 +581,7 @@ tr:last-child td {
   border-bottom: 0;
 }
 
+/* Student name text and small supporting text. */
 .student-name {
   font-weight: 800;
 }
@@ -477,6 +597,7 @@ tr:last-child td {
   font-weight: 800;
 }
 
+/* Colored student label pills. */
 .pills {
   display: flex;
   flex-wrap: wrap;
@@ -528,18 +649,21 @@ tr:last-child td {
   color: #0f766e;
 }
 
+/* Empty-state messages. */
 .empty {
   color: var(--muted);
   text-align: center;
   padding: 28px;
 }
 
+/* General chart grid layout. */
 .chart-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 22px;
 }
 
+/* Insights checkbox controls. */
 .insight-controls {
   display: grid;
   grid-template-columns: minmax(0, 1.35fr) minmax(260px, 0.85fr);
@@ -603,6 +727,7 @@ tr:last-child td {
   margin-bottom: 22px;
 }
 
+/* Insight stat cards and credit milestone rows. */
 .stats-list {
   display: grid;
   gap: 10px;
@@ -617,6 +742,11 @@ tr:last-child td {
   gap: 16px;
   justify-content: space-between;
   padding: 14px;
+}
+
+.stat-row-block {
+  align-items: stretch;
+  flex-direction: column;
 }
 
 .stat-row span {
@@ -637,12 +767,142 @@ tr:last-child td {
   line-height: 1.1;
 }
 
+.stat-breakdown {
+  border-top: 1px solid var(--line);
+  display: grid;
+  gap: 8px;
+  padding-top: 12px;
+}
+
+.stat-breakdown-row {
+  align-items: center;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 90px 70px;
+  gap: 10px;
+}
+
+.stat-breakdown-label {
+  align-items: baseline;
+  color: var(--ink);
+  display: flex;
+  gap: 10px;
+  justify-content: flex-start;
+  margin-top: 0;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.stat-breakdown-label strong {
+  font-weight: 800;
+}
+
+.stat-breakdown-label small {
+  color: var(--muted);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.stat-breakdown-row > strong,
+.stat-breakdown-row > small {
+  text-align: right;
+}
+
+.stat-breakdown-row > small,
+.stat-breakdown-empty {
+  color: var(--muted);
+}
+
+/* Historical benchmark upload and benchmark cards. */
+.historical-import {
+  align-items: end;
+  background: #f8fafc;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  display: grid;
+  gap: 12px;
+  grid-template-columns: minmax(260px, 1fr) auto;
+  margin-bottom: 12px;
+  padding: 12px;
+}
+
+.historical-status {
+  margin-bottom: 12px;
+}
+
+.historical-grid {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin-bottom: 12px;
+}
+
+.benchmark-section {
+  margin-top: 18px;
+}
+
+.embedded-toolbar {
+  margin-bottom: 12px;
+}
+
+.historical-card {
+  background: #f8fafc;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  margin-bottom: 12px;
+  padding: 14px;
+}
+
+.historical-card h3 {
+  margin-bottom: 10px;
+}
+
+.section-note {
+  color: var(--muted);
+  font-size: 13px;
+  margin: -4px 0 12px;
+}
+
+.historical-trend-svg {
+  display: block;
+  width: 100%;
+}
+
+.historical-marker {
+  stroke: var(--warn);
+  stroke-dasharray: 4 4;
+  stroke-width: 2;
+}
+
+.historical-program-row {
+  align-items: center;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(180px, auto) 90px;
+  gap: 10px;
+}
+
+.historical-program-row span {
+  color: var(--ink);
+  font-weight: 800;
+  margin: 0;
+}
+
+.historical-program-row small {
+  color: var(--muted);
+}
+
+.historical-program-row strong {
+  text-align: right;
+}
+
+/* Insights card containers. */
 .insight-card {
   border: 1px solid var(--line);
   border-radius: 8px;
+  margin-bottom: 18px;
   padding: 16px;
 }
 
+/* Pie chart comparison panels. */
 .pie-compare {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -719,6 +979,7 @@ tr:last-child td {
   width: 12px;
 }
 
+/* Trend line chart area. */
 .line-chart {
   min-height: 260px;
 }
@@ -785,6 +1046,7 @@ tr:last-child td {
   white-space: nowrap;
 }
 
+/* Week-over-week and target summary cards. */
 .comparison-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -844,6 +1106,74 @@ tr:last-child td {
   overflow-wrap: anywhere;
 }
 
+/* Week-over-week bar chart. */
+.comparison-movement {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  margin-bottom: 14px;
+  padding: 14px;
+}
+
+.movement-bars {
+  display: grid;
+  gap: 10px;
+}
+
+.movement-row {
+  align-items: center;
+  display: grid;
+  gap: 10px;
+  grid-template-columns: minmax(150px, 220px) minmax(0, 1fr) 54px;
+  min-height: 28px;
+}
+
+.movement-row span {
+  color: var(--ink);
+  font-size: 13px;
+  font-weight: 800;
+  overflow-wrap: anywhere;
+}
+
+.movement-row strong {
+  font-size: 13px;
+  text-align: right;
+}
+
+.movement-track {
+  background: #e7eef5;
+  border-radius: 999px;
+  height: 12px;
+  overflow: hidden;
+}
+
+.movement-fill {
+  background: var(--accent);
+  border-radius: 999px;
+  height: 100%;
+  min-width: 0;
+}
+
+.movement-fill.blue {
+  background: var(--blue);
+}
+
+.movement-fill.teal {
+  background: var(--accent);
+}
+
+.movement-fill.green {
+  background: #65a30d;
+}
+
+.movement-fill.amber {
+  background: var(--warn);
+}
+
+.movement-fill.purple {
+  background: #7c3aed;
+}
+
+/* Collapsible comparison lists. */
 .comparison-sections {
   display: grid;
   gap: 18px;
@@ -913,6 +1243,7 @@ tr:last-child td {
   margin-bottom: 18px;
 }
 
+/* Uploaded report history list. */
 .history-list {
   border: 1px solid var(--line);
   border-radius: 8px;
@@ -953,6 +1284,7 @@ tr:last-child td {
   flex-shrink: 0;
 }
 
+/* Small icon buttons, including delete buttons. */
 .icon-button {
   display: inline-grid;
   place-items: center;
@@ -994,6 +1326,7 @@ tr:last-child td {
   width: 18px;
 }
 
+/* Modal pop-up background and card layout. */
 .modal-backdrop {
   align-items: center;
   background: rgba(15, 23, 42, 0.42);
@@ -1043,6 +1376,13 @@ tr:last-child td {
   gap: 10px;
 }
 
+.modal-note-row {
+  align-items: start;
+  display: grid;
+  gap: 8px;
+  grid-template-columns: minmax(0, 1fr) auto;
+}
+
 .modal-notes p {
   background: #f8fafc;
   border: 1px solid var(--line);
@@ -1053,9 +1393,34 @@ tr:last-child td {
   white-space: pre-wrap;
 }
 
+/* Settings form layout. */
 .settings-form {
   display: grid;
   gap: 14px;
+}
+
+.settings-section {
+  border-top: 1px solid var(--line);
+  display: grid;
+  gap: 10px;
+  padding-top: 14px;
+}
+
+.settings-section h3 {
+  margin: 0;
+}
+
+.target-settings-form {
+  display: grid;
+  gap: 10px;
+}
+
+.target-settings-form .field {
+  margin-bottom: 0;
+}
+
+.target-settings-form button {
+  justify-self: start;
 }
 
 .settings-form button {
@@ -1068,6 +1433,7 @@ tr:last-child td {
   padding: 14px;
 }
 
+/* Older bar and trend utility styles still used by generated pieces. */
 .bars,
 .trend {
   display: grid;
@@ -1114,6 +1480,7 @@ tr:last-child td {
   color: var(--muted);
 }
 
+/* Medium-width layout adjustments. */
 @media (max-width: 1050px) {
   .filters {
     position: static;
@@ -1127,6 +1494,23 @@ tr:last-child td {
     grid-template-columns: minmax(220px, 0.8fr) minmax(320px, 1.2fr);
   }
 
+  .report-upload-grid {
+    grid-template-columns: minmax(260px, 460px) minmax(320px, 1fr);
+  }
+
+  .outreach-form-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .outreach-student-ids,
+  .outreach-notes {
+    grid-column: span 2;
+  }
+
+  .top-metrics {
+    grid-template-columns: repeat(2, minmax(150px, 1fr));
+  }
+
   h1 {
     font-size: 26px;
   }
@@ -1136,6 +1520,7 @@ tr:last-child td {
   }
 }
 
+/* Small-screen layout adjustments. */
 @media (max-width: 720px) {
   .shell {
     width: min(100% - 20px, 1440px);
@@ -1160,9 +1545,24 @@ tr:last-child td {
   .upload-grid,
   .workspace,
   .form-grid,
+  .outreach-form-grid,
   .chart-grid,
   .insight-controls,
+  .historical-grid,
+  .historical-import,
   .comparison-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .movement-row {
+    grid-template-columns: minmax(0, 1fr) 54px;
+  }
+
+  .movement-row span {
+    grid-column: 1 / -1;
+  }
+
+  .top-metrics {
     grid-template-columns: 1fr;
   }
 
@@ -1179,8 +1579,35 @@ tr:last-child td {
   .stat-value {
     text-align: left;
   }
+
+  .stat-breakdown-row {
+    grid-template-columns: 1fr;
+  }
+
+  .stat-breakdown-label {
+    flex-wrap: wrap;
+  }
+
+  .stat-breakdown-row > strong,
+  .stat-breakdown-row > small {
+    text-align: left;
+  }
+
+  .historical-program-row {
+    grid-template-columns: 1fr;
+  }
+
+  .historical-program-row strong {
+    text-align: left;
+  }
+
+  .outreach-student-ids,
+  .outreach-notes {
+    grid-column: auto;
+  }
 }
 
+/* Print layout used by Export insights PDF. */
 @media print {
   @page {
     margin: 0.5in;
@@ -1201,6 +1628,8 @@ tr:last-child td {
   body.printing-insights .insight-controls,
   body.printing-insights #studentsTab,
   body.printing-insights #statsTab,
+  body.printing-insights #historicalTab,
+  body.printing-insights #targetsTab,
   body.printing-insights #comparisonTab,
   body.printing-insights #outreachTab,
   body.printing-insights #emptyState,

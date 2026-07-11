@@ -47,7 +47,7 @@ manifest.webmanifest
 
 ## Sample Data
 
-The repo includes four fake weekly reports in:
+The repo includes four fake weekly reports and one fake historical registration-date workbook in:
 
 ```text
 sample-data/
@@ -60,11 +60,12 @@ sample-data/fake-week-1-2026-06-15.csv
 sample-data/fake-week-2-2026-06-22.csv
 sample-data/fake-week-3-2026-06-29.csv
 sample-data/fake-week-4-2026-07-06.csv
+sample-data/fake-last-year-registration-dates.xlsx
 ```
 
 These are fictional records with fake names, fake IDs, and fake email addresses. They are meant for testing and demos only.
 
-To test the app with sample data:
+To test the app with the weekly sample data:
 
 1. Open `index.html`.
 2. Load `fake-week-1-2026-06-15.csv` with report date `2026-06-15`.
@@ -73,6 +74,15 @@ To test the app with sample data:
 5. Load `fake-week-4-2026-07-06.csv` with report date `2026-07-06`.
 
 After loading at least two reports, the dashboard can show week-over-week comparisons.
+
+To test historical benchmarks:
+
+1. Go to **Benchmarks & Targets**.
+2. In **Historical Benchmarks**, choose `fake-last-year-registration-dates.xlsx`.
+3. Click **Load historical registrations**.
+4. Review last year's pace, current pace, pace gap, forecast, program pace comparison, and late-registration risk.
+
+The fake historical workbook has extra title rows before the header row. This is intentional; the app is built to find the real header row inside files like this.
 
 ## Privacy Notes
 
@@ -208,6 +218,12 @@ Includes:
 - late-registration risk list
 
 Budget enrolment numbers are documented in the app as coming from the Budget Forecast dashboard.
+
+To test this tab fully with sample data:
+
+1. Load the four fake weekly reports from `sample-data/`.
+2. Load `fake-last-year-registration-dates.xlsx` in the Historical Benchmarks area.
+3. Use Focus filters to check that historical comparisons respond to level/program filtering.
 
 ### Student Outreach
 
@@ -466,6 +482,7 @@ student-outreach-dashboard/
     fake-week-2-2026-06-22.csv
     fake-week-3-2026-06-29.csv
     fake-week-4-2026-07-06.csv
+    fake-last-year-registration-dates.xlsx
   vendor/
     xlsx.full.min.js
 ```
@@ -538,9 +555,10 @@ Before leaving the project alone for a while:
 2. Confirm no real data is committed.
 3. Open the app once from `index.html`.
 4. Load the four sample reports.
-5. Check Week-over-week and Insights.
-6. Clear all data if you tested with real data.
-7. Commit the app, README, and sample data to GitHub.
+5. Load the fake historical registration-date workbook.
+6. Check Week-over-week, Insights, and Benchmarks & Targets.
+7. Clear all data if you tested with real data.
+8. Commit the app, README, and sample data to GitHub.
 
 ## Future Ideas
 
@@ -548,8 +566,6 @@ Potential additions later:
 
 - desktop app packaging
 - import/export of full saved dashboard state
-- historical sample-data file
 - more benchmark visualizations
 - protected workflow for real data outside the repo
 - clearer onboarding screen for first-time users
-
